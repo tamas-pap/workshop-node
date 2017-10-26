@@ -1,0 +1,26 @@
+<body>
+  alpha: <div id="alpha"></div>
+  beta: <div id="beta"></div>
+  gamma: <div id="gamma"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.js"></script>
+  <script>
+    const socket = io('http://192.168.1.105:8080');
+    const alphaEl = document.getElementById('alpha');
+    const betaEl = document.getElementById('beta');
+    const gammaEl = document.getElementById('gamma');
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', _.throttle(function (event) {
+        alphaEl.innerHTML = event.alpha;
+        betaEl.innerHTML = event.beta;
+        gammaEl.innerHTML = event.gamma;
+        socket.emit('orientationChange', {
+          alpha: event.alpha,
+          beta: event.beta,
+          gamma: event.gamma
+        });
+      }, 200), false);
+    }
+  </script>
+</body>
